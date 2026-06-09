@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>На проверку</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f6fa; margin: 0; }
+    .header { background: #667eea; color: white; padding: 15px 25px; display: flex; justify-content: space-between; }
+    .header a { color: white; text-decoration: none; font-size: 14px; margin-left: 15px; }
+    .menu { background: white; padding: 10px 25px; display: flex; gap: 15px; }
+    .menu a { text-decoration: none; color: #555; font-size: 14px; }
+    .menu a.active { color: #667eea; font-weight: bold; }
+    .content { padding: 25px; max-width: 800px; margin: 0 auto; }
+    .card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+    .btn { padding: 8px 18px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold; background: #667eea; color: white; text-decoration: none; }
+    .empty { text-align: center; padding: 60px; color: #999; background: white; border-radius: 12px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <strong>📚 Кабинет репетитора</strong>
+    <span>👋 <%= user.name %> <a href="/logout">Выйти</a></span>
+  </div>
+  <div class="menu">
+    <a href="/teacher/dashboard">🏠 Главная</a>
+    <a href="/teacher/calendar">📅 Расписание</a>
+    <a href="/teacher/students">👩‍🎓 Ученики</a>
+    <a href="/teacher/check-homeworks" class="active">📝 На проверку</a>
+    <a href="/teacher/finances">💰 Финансы</a>
+  </div>
+  <div class="content">
+    <h2>📝 Домашки на проверку</h2>
+    <% if (homeworks.length === 0) { %>
+      <div class="empty">✅ Всё проверено!</div>
+    <% } else { %>
+      <% homeworks.forEach(function(hw) { %>
+        <div class="card">
+          <div>
+            <h3><%= hw.title %></h3>
+            <p>Ученик: <%= hw.student_name %> | Срок: <%= hw.deadline || '—' %></p>
+            <% if (hw.file) { %><p>📎 <a href="/uploads/<%= hw.file %>" target="_blank">Файл</a></p><% } %>
+          </div>
+          <a href="/teacher/review-homework/<%= hw.id %>" class="btn">📋 Проверить</a>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+</body>
+</html>

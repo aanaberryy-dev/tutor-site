@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мои задания</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f6fa; margin: 0; }
+    .header { background: #667eea; color: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; }
+    .header a { color: white; text-decoration: none; font-size: 14px; margin-left: 15px; }
+    .content { padding: 25px; max-width: 800px; margin: 0 auto; }
+    .card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .card h3 { margin-top: 0; color: #333; }
+    .empty { text-align: center; padding: 60px; color: #999; background: white; border-radius: 12px; }
+    .badge { padding: 4px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; display: inline-block; margin-bottom: 10px; }
+    .badge-assigned { background: #eef2ff; color: #667eea; }
+    .badge-submitted { background: #fff3e0; color: #e67e22; }
+    .badge-checked { background: #e8f5e9; color: #27ae60; }
+    .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold; margin-right: 5px; }
+    .btn-purple { background: #667eea; color: white; }
+    .btn-green { background: #27ae60; color: white; }
+    .btn-outline { background: white; color: #667eea; border: 2px solid #667eea; }
+    textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin: 5px 0; font-family: Arial; }
+    input[type="file"] { margin: 5px 0; }
+    form { margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <strong>📚 Кабинет ученика</strong>
+    <span>
+      👋 <%= user.name %>
+      <a href="/student/profile">👤 Профиль</a>
+      <a href="/logout">Выйти</a>
+    </span>
+  </div>
+
+  <div class="content">
+    <h2>📝 Мои домашние задания</h2>
+
+    <% if (homeworks.length === 0) { %>
+      <div class="empty">🎉 Нет заданий. Репетитор пока ничего не выдал.</div>
+    <% } %>
+
+    <% homeworks.forEach(function(hw) { %>
+      <div class="card">
+        <h3><%= hw.title %></h3>
+
+        <% if (hw.status === 'assigned') { %>
+          <span class="badge badge-assigned">📌 Выдано</span>
+        <% } else if (hw.status === 'submitted') { %>
+          <span class="badge badge-submitted">⏳ На проверке</span>
+        <% } else if (hw.status === 'checked') { %>
+          <span class="badge badge-checked">✅ Проверено</span>
+        <% } %>
+
+        <p style="color:#666;"><%= hw.description || '' %></p>
+        <p style="color:#999; font-size:13px;">📅 Сдать до: <%= hw.deadline || '—' %></p>
+
+        <% if (hw.file && hw.status === 'assigned') { %>
+          <p>📎 <a href="/uploads/<%= hw.file %>" target="_blank">Файл от учителя</a></p>
+        <% } %>
+
+        <% if (hw.status === 'assigned') { %>
+          <form action="/student/toggle-done" method="POST" style="display:inline;">
+            <input type="hidden" name="homework_id" value="<%= hw.id %>">
+            <input type="hidden" name="done" value="<%= hw.student_done ? 0 : 1 %>">
+            <label>
+              <input type="checkbox" onchange="this.form.submit()" <%= hw.student_done ? 'checked' : '' %>>
+              Отметить как сделанное
+            </label>
+          </form>
+
+          <form action="/student/submit-homework" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="homework_id" value="<%= hw.id %>">
+            <input type="file" name="file" required>
+            <button type="submit" class="btn btn-purple">📤 Отправить на проверку</button>
+          </form>
+
+          <form action="/student/ask-question" method="POST">
+            <input type="hidden" name="homework_id" value="<%= hw.id %>">
+            <textarea name="question" placeholder="Задать вопрос репетитору..."></textarea>
+            <button type="submit" class="btn btn-outline">💬 Задать вопрос</button>
+          </form>
+        <% } %>
+
+        <% if (hw.status === 'checked') { %>
+          <p><strong>🌟 Оценка:</strong> <%= hw.grade || '—' %></p>
+          <% if (hw.feedback && !hw.feedback.startsWith('Вопрос ученика:')) { %>
+            <p><strong>💬 Комментарий:</strong> <%= hw.feedback %></p>
+          <% } %>
+        <% } %>
+
+        <% if (hw.file && (hw.status === 'submitted' || hw.status === 'checked')) { %>
+          <p>📎 <a href="/uploads/<%= hw.file %>" target="_blank">Загруженный файл</a></p>
+        <% } %>
+      </div>
+    <% }) %>
+  </div>
+</body>
+</html>
