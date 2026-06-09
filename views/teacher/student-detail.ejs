@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Карточка ученика</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f6fa; margin: 0; }
+    .header { background: #667eea; color: white; padding: 15px 25px; display: flex; justify-content: space-between; }
+    .header a { color: white; text-decoration: none; font-size: 14px; margin-left: 15px; }
+    .menu { background: white; padding: 10px 25px; display: flex; gap: 15px; }
+    .menu a { text-decoration: none; color: #555; font-size: 14px; }
+    .content { padding: 25px; max-width: 800px; margin: 0 auto; }
+    .card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; }
+    .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold; }
+    .btn-purple { background: #667eea; color: white; }
+    .btn-green { background: #27ae60; color: white; }
+    input, textarea, select { width: 100%; padding: 8px; margin: 5px 0 10px; border: 1px solid #ddd; border-radius: 6px; font-family: Arial; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px; text-align: left; border-bottom: 1px solid #eee; font-size: 14px; }
+    .empty { color: #999; text-align: center; padding: 20px; }
+    .back { color: #667eea; text-decoration: none; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <strong>📚 Кабинет репетитора</strong>
+    <span>👋 <%= user.name %> <a href="/logout">Выйти</a></span>
+  </div>
+  <div class="menu">
+    <a href="/teacher/dashboard">🏠 Главная</a>
+    <a href="/teacher/calendar">📅 Расписание</a>
+    <a href="/teacher/students">👩‍🎓 Ученики</a>
+    <a href="/teacher/check-homeworks">📝 На проверку</a>
+    <a href="/teacher/finances">💰 Финансы</a>
+  </div>
+  <div class="content">
+    <a href="/teacher/students" class="back">← Назад к списку</a>
+    <h2><%= student.name %></h2>
+    <p style="color:#999;"><%= student.email %></p>
+
+    <div class="card">
+      <h3>➕ Выдать домашнее задание</h3>
+      <form action="/teacher/add-homework" method="POST">
+        <input type="hidden" name="student_id" value="<%= student.id %>">
+        <input type="text" name="title" placeholder="Название задания" required>
+        <input type="date" name="deadline">
+        <button type="submit" class="btn btn-purple">Выдать</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>➕ Добавить оплату</h3>
+      <form action="/teacher/add-payment" method="POST">
+        <input type="hidden" name="student_id" value="<%= student.id %>">
+        <input type="number" name="amount" placeholder="Сумма" required>
+        <input type="date" name="date" required>
+        <button type="submit" class="btn btn-green">Добавить</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>📋 Домашние задания</h3>
+      <% if (homeworks.length === 0) { %><div class="empty">Нет заданий</div><% } else { %>
+        <table>
+          <tr><th>Название</th><th>Срок</th><th>Статус</th></tr>
+          <% homeworks.forEach(function(hw) { %>
+            <tr>
+              <td><%= hw.title %></td>
+              <td><%= hw.deadline || '—' %></td>
+              <td><%= hw.status %></td>
+            </tr>
+          <% }) %>
+        </table>
+      <% } %>
+    </div>
+
+    <div class="card">
+      <h3>💰 Оплаты</h3>
+      <% if (payments.length === 0) { %><div class="empty">Нет оплат</div><% } else { %>
+        <table>
+          <tr><th>Дата</th><th>Сумма</th></tr>
+          <% payments.forEach(function(p) { %>
+            <tr><td><%= p.date %></td><td><%= p.amount %> ₽</td></tr>
+          <% }) %>
+        </table>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>
