@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Мои занятия</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f6fa; margin: 0; }
+    .header { background: #667eea; color: white; padding: 15px 25px; display: flex; justify-content: space-between; }
+    .header a { color: white; text-decoration: none; font-size: 14px; margin-left: 10px; }
+    .menu { background: white; padding: 10px 25px; display: flex; gap: 15px; flex-wrap: wrap; }
+    .menu a { text-decoration: none; color: #555; font-size: 14px; }
+    .menu a.active { color: #667eea; font-weight: bold; }
+    .content { padding: 25px; max-width: 800px; margin: 0 auto; }
+    .card { background: white; padding: 18px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; border-left: 4px solid #667eea; }
+    .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .card h3 { margin: 0 0 5px; font-size: 16px; }
+    .card p { margin: 3px 0; color: #666; font-size: 13px; }
+    .badge { padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; }
+    .planned { background: #eef2ff; color: #667eea; }
+    .paid { background: #e8f5e9; color: #27ae60; }
+    .empty { text-align: center; padding: 40px; color: #999; }
+  </style>
+</head>
+<body>
+  <div class="header"><strong>📚 Кабинет ученика</strong><span>👋 <%= user.name %> <a href="/student/profile">👤</a> <a href="/logout">Выйти</a></span></div>
+  <div class="menu">
+    <a href="/student/dashboard">🏠 Главная</a>
+    <a href="/student/calendar">📅 Расписание</a>
+    <a href="/student/lessons" class="active">📖 Занятия</a>
+    <a href="/student/homeworks">📝 ДЗ</a>
+    <a href="/student/library">📚 Материалы</a>
+    <a href="/student/profile">👤 Профиль</a>
+  </div>
+  <div class="content">
+    <h2>📖 Мои занятия</h2>
+    <% if (lessons.length === 0) { %><div class="empty">Нет занятий</div><% } %>
+    <% lessons.forEach(function(l){ %>
+      <div class="card" onclick="location.href='/student/lesson/<%= l.id %>'">
+        <h3><%= l.topic || 'Без темы' %></h3>
+        <p>📅 <%= new Date(l.date_time).toLocaleString('ru-RU') %> | ⏱ <%= l.duration %> мин</p>
+        <p>💰 <%= l.price %> BYN | <span class="badge <%= l.status %>"><%= l.status %></span></p>
+        <% if (l.grade) { %><p>⭐ Оценка: <%= l.grade %></p><% } %>
+      </div>
+    <% }) %>
+  </div>
+</body>
+</html>

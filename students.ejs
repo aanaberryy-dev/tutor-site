@@ -2,17 +2,18 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ученики</title>
   <style>
     body { font-family: Arial, sans-serif; background: #f5f6fa; margin: 0; }
-    .header { background: #667eea; color: white; padding: 15px 25px; display: flex; justify-content: space-between; }
+    .header { background: #667eea; color: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; }
     .header a { color: white; text-decoration: none; font-size: 14px; margin-left: 15px; }
-    .menu { background: white; padding: 10px 25px; display: flex; gap: 15px; }
-    .menu a { text-decoration: none; color: #555; font-size: 14px; }
-    .menu a.active { color: #667eea; font-weight: bold; }
+    .menu { background: white; padding: 10px 25px; display: flex; gap: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .menu a { text-decoration: none; color: #555; font-size: 14px; font-weight: 500; }
+    .menu a:hover { color: #667eea; }
     .content { padding: 25px; max-width: 900px; margin: 0 auto; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-    .card { background: white; padding: 25px; border-radius: 12px; text-align: center; text-decoration: none; color: #333; display: block; }
+    .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; text-decoration: none; color: #333; display: block; }
     .card:hover { box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
     .avatar { width: 60px; height: 60px; border-radius: 50%; background: #667eea; color: white; font-size: 28px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
     .empty { text-align: center; padding: 60px; color: #999; background: white; border-radius: 12px; }
@@ -26,7 +27,7 @@
   <div class="menu">
     <a href="/teacher/dashboard">🏠 Главная</a>
     <a href="/teacher/calendar">📅 Расписание</a>
-    <a href="/teacher/students" class="active">👩‍🎓 Ученики</a>
+    <a href="/teacher/students" style="color:#667eea; font-weight:600;">👩‍🎓 Ученики</a>
     <a href="/teacher/check-homeworks">📝 На проверку</a>
     <a href="/teacher/finances">💰 Финансы</a>
   </div>

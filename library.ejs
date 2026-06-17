@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Библиотека</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f6fa; margin: 0; }
+    .header { background: #667eea; color: white; padding: 15px 25px; display: flex; justify-content: space-between; }
+    .header a { color: white; text-decoration: none; font-size: 14px; margin-left: 10px; }
+    .menu { background: white; padding: 10px 25px; display: flex; gap: 15px; flex-wrap: wrap; }
+    .menu a { text-decoration: none; color: #555; font-size: 14px; }
+    .menu a.active { color: #667eea; font-weight: bold; }
+    .content { padding: 25px; max-width: 800px; margin: 0 auto; }
+    .card { background: white; padding: 18px; border-radius: 12px; margin-bottom: 12px; }
+    .card h3 { margin: 0 0 5px; }
+    .card p { color: #666; font-size: 14px; }
+    .card a { color: #667eea; font-weight: bold; }
+    .empty { text-align: center; padding: 40px; color: #999; }
+  </style>
+</head>
+<body>
+  <div class="header"><strong>📚 Кабинет ученика</strong><span>👋 <%= user.name %> <a href="/student/profile">👤</a> <a href="/logout">Выйти</a></span></div>
+  <div class="menu">
+    <a href="/student/dashboard">🏠 Главная</a>
+    <a href="/student/calendar">📅 Расписание</a>
+    <a href="/student/lessons">📖 Занятия</a>
+    <a href="/student/homeworks">📝 ДЗ</a>
+    <a href="/student/library" class="active">📚 Материалы</a>
+    <a href="/student/profile">👤 Профиль</a>
+  </div>
+  <div class="content">
+    <h2>📚 Библиотека материалов</h2>
+    <% if (items.length===0) { %><div class="empty">Нет материалов</div><% } %>
+    <% items.forEach(function(item){ %>
+      <div class="card">
+        <h3><%= item.title %></h3>
+        <p><%= item.description||'' %></p>
+        <% if (item.url) { %><a href="<%= item.url %>" target="_blank">🔗 Открыть</a><% } %>
+      </div>
+    <% }) %>
+  </div>
+</body>
+</html>

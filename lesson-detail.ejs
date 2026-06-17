@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Детали занятия</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f6fa; margin: 0; }
+    .header { background: #667eea; color: white; padding: 15px 25px; display: flex; justify-content: space-between; }
+    .header a { color: white; text-decoration: none; font-size: 14px; }
+    .content { padding: 25px; max-width: 600px; margin: 0 auto; }
+    .card { background: white; padding: 25px; border-radius: 12px; }
+    .card p { margin: 8px 0; font-size: 15px; }
+    .back { color: #667eea; text-decoration: none; display: block; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+  <div class="header"><strong>📚 Кабинет ученика</strong><span>👋 <%= user.name %> <a href="/student/lessons">←</a> <a href="/logout">Выйти</a></span></div>
+  <div class="content">
+    <a href="/student/lessons" class="back">← Назад</a>
+    <div class="card">
+      <h2><%= lesson.topic || 'Без темы' %></h2>
+      <p>📅 <strong><%= new Date(lesson.date_time).toLocaleString('ru-RU') %></strong></p>
+      <p>⏱ Длительность: <%= lesson.duration %> мин</p>
+      <p>💰 Цена: <%= lesson.price %> BYN</p>
+      <p>📌 Статус: <%= lesson.status %></p>
+      <% if (lesson.link) { %><p>🔗 <a href="<%= lesson.link %>" target="_blank">Ссылка на занятие</a></p><% } %>
+      <% if (lesson.materials) { %><p>📄 Материалы: <%= lesson.materials %></p><% } %>
+      <% if (lesson.grade) { %><p>⭐ Оценка за занятие: <strong><%= lesson.grade %></strong></p><% } %>
+      <% if (lesson.teacher_comment) { %><p>💬 Комментарий: <%= lesson.teacher_comment %></p><% } %>
+    </div>
+  </div>
+</body>
+</html>

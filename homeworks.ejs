@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Домашние задания</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f6fa; margin: 0; }
+    .header { background: #667eea; color: white; padding: 15px 25px; display: flex; justify-content: space-between; }
+    .header a { color: white; text-decoration: none; font-size: 14px; margin-left: 10px; }
+    .menu { background: white; padding: 10px 25px; display: flex; gap: 15px; flex-wrap: wrap; }
+    .menu a { text-decoration: none; color: #555; font-size: 14px; }
+    .menu a.active { color: #667eea; font-weight: bold; }
+    .content { padding: 25px; max-width: 800px; margin: 0 auto; }
+    .card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; }
+    .card h3 { margin: 0 0 5px; }
+    .badge { padding: 4px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; display: inline-block; margin: 5px 0; }
+    .badge-assigned { background: #eef2ff; color: #667eea; }
+    .badge-submitted { background: #fff3e0; color: #e67e22; }
+    .badge-checked { background: #e8f5e9; color: #27ae60; }
+    .btn { padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    .btn-purple { background: #667eea; color: white; }
+    .btn-outline { background: white; color: #667eea; border: 2px solid #667eea; }
+    textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin: 5px 0; }
+    input[type="file"] { margin: 5px 0; }
+    .empty { text-align: center; padding: 40px; color: #999; }
+  </style>
+</head>
+<body>
+  <div class="header"><strong>📚 Кабинет ученика</strong><span>👋 <%= user.name %> <a href="/student/profile">👤</a> <a href="/logout">Выйти</a></span></div>
+  <div class="menu">
+    <a href="/student/dashboard">🏠 Главная</a>
+    <a href="/student/calendar">📅 Расписание</a>
+    <a href="/student/lessons">📖 Занятия</a>
+    <a href="/student/homeworks" class="active">📝 ДЗ</a>
+    <a href="/student/library">📚 Материалы</a>
+    <a href="/student/profile">👤 Профиль</a>
+  </div>
+  <div class="content">
+    <h2>📝 Домашние задания</h2>
+    <% if (homeworks.length===0) { %><div class="empty">Нет заданий</div><% } %>
+    <% homeworks.forEach(function(h){ %>
+      <div class="card">
+        <h3><%= h.title %></h3>
+        <p style="color:#666;"><%= h.description||'' %></p>
+        <p style="color:#999;">📅 Сдать до: <%= h.deadline||'—' %></p>
+
+        <% if (h.status==='assigned') { %><span class="badge badge-assigned">📌 Выдано</span><% } %>
+        <% if (h.status==='submitted') { %><span class="badge badge-submitted">⏳ На проверке</span><% } %>
+        <% if (h.status==='checked') { %><span class="badge badge-checked">✅ Проверено</span><% } %>
+
+        <% if (h.status==='assigned') { %>
+          <form action="/student/toggle-done" method="POST" style="display:inline;">
+            <input type="hidden" name="homework_id" value="<%= h.id %>">
+            <input type="hidden" name="done" value="<%= h.student_done?0:1 %>">
+            <label><input type="checkbox" onchange="this.form.submit()" <%= h.student_done?'checked':'' %>> Сделано</label>
+          </form>
+          <form action="/student/submit-homework" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="homework_id" value="<%= h.id %>">
+            <input type="file" name="file" required><br>
+            <button class="btn btn-purple">📤 Отправить на проверку</button>
+          </form>
+        <% } %>
+
+        <% if (h.status==='checked') { %>
+          <p><strong>🌟 Оценка:</strong> <%= h.grade||'—' %></p>
+          <p><strong>💬 Комментарий:</strong> <%= h.feedback||'—' %></p>
+        <% } %>
+      </div>
+    <% }) %>
+  </div>
+</body>
+</html>

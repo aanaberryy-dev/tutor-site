@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Присоединиться к доске</title>
+  <style>
+    body { font-family: Arial; background: #f5f6fa; }
+    .header { background: #667eea; color: white; padding: 15px 25px; }
+    .content { padding: 40px; max-width: 400px; margin: 0 auto; }
+    .card { background: white; padding: 25px; border-radius: 12px; }
+    input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; }
+    button { width: 100%; padding: 10px; background: #667eea; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; }
+    .error { color: red; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <div class="header"><strong>📚 Доска</strong></div>
+  <div class="content">
+    <div class="card">
+      <h2>🎨 Присоединиться</h2>
+      <% if (error) { %><p class="error"><%= error %></p><% } %>
+      <form action="/student/join-board" method="POST">
+        <input type="text" name="boardId" placeholder="ID доски от учителя" required>
+        <button type="submit">Открыть доску</button>
+      </form>
+      <a href="/student/dashboard" style="display:block; text-align:center; margin-top:15px; color:#667eea;">← Назад</a>
+    </div>
+  </div>
+</body>
+</html>

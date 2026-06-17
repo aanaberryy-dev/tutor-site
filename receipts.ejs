@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"><title>Счета</title>
+  <style>
+    body { font-family: Arial; background: #f5f6fa; margin: 0; }
+    .header { background: #667eea; color: white; padding: 15px 25px; display: flex; justify-content: space-between; }
+    .header a { color: white; text-decoration: none; }
+    .menu { background: white; padding: 10px 25px; display: flex; gap: 15px; }
+    .menu a { text-decoration: none; color: #555; }
+    .menu a.active { color: #667eea; font-weight: bold; }
+    .content { padding: 25px; max-width: 800px; margin: 0 auto; }
+    .card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; }
+    select, input, button { padding: 8px; border: 1px solid #ddd; border-radius: 6px; }
+    .btn { background: #667eea; color: white; border: none; cursor: pointer; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px; border-bottom: 1px solid #eee; }
+  </style>
+</head>
+<body>
+  <div class="header"><strong>📚 Счета</strong><span>👋 <%= user.name %> <a href="/logout">Выйти</a></span></div>
+  <div class="menu">
+    <a href="/teacher/dashboard">🏠 Главная</a>
+    <a href="/teacher/calendar">📅 Расписание</a>
+    <a href="/teacher/students">👩‍🎓 Ученики</a>
+    <a href="/teacher/finances">💰 Финансы</a>
+    <a href="/teacher/receipts" class="active">🧾 Счета</a>
+    <a href="/teacher/export-report">📥 Отчёт CSV</a>
+  </div>
+  <div class="content">
+    <h2>🧾 Счета и чеки</h2>
+    <div class="card">
+      <h3>Создать счёт</h3>
+      <form action="/teacher/create-receipt" method="POST">
+        <select name="student_id"><% students.forEach(function(s){ %><option value="<%= s.id %>"><%= s.name %></option><% }) %></select>
+        <input type="month" name="month" required>
+        <button class="btn">Создать</button>
+      </form>
+    </div>
+    <div class="card">
+      <h3>Список счетов</h3>
+      <table><tr><th>Дата</th><th>Ученик</th><th>Месяц</th><th>Сумма</th></tr>
+      <% receipts.forEach(function(r){ %><tr><td><%= r.created_at %></td><td><%= r.student_name %></td><td><%= r.month %></td><td><%= r.total %> BYN</td><td><a href="/teacher/receipt/<%= r.id %>">📄</a></td></tr><% }) %></table>
+    </div>
+  </div>
+</body>
+</html>

@@ -2,40 +2,32 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Финансы</title>
   <style>
     body { font-family: Arial, sans-serif; background: #f5f6fa; margin: 0; }
     .header { background: #667eea; color: white; padding: 15px 25px; display: flex; justify-content: space-between; }
-    .header a { color: white; text-decoration: none; font-size: 14px; margin-left: 15px; }
+    .header a { color: white; text-decoration: none; font-size: 14px; }
     .menu { background: white; padding: 10px 25px; display: flex; gap: 15px; }
     .menu a { text-decoration: none; color: #555; font-size: 14px; }
     .menu a.active { color: #667eea; font-weight: bold; }
     .content { padding: 25px; max-width: 1000px; margin: 0 auto; }
     .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px; }
     .card { background: white; padding: 20px; border-radius: 12px; text-align: center; }
-    .card .label { font-size: 13px; color: #888; margin-bottom: 5px; }
+    .card .label { font-size: 13px; color: #888; }
     .card .num { font-size: 28px; font-weight: bold; }
-    .card .num.green { color: #27ae60; }
-    .card .num.red { color: #e74c3c; }
-    .card .num.blue { color: #667eea; }
-    .add-form { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
-    .add-form input, .add-form select { padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
-    .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; color: white; }
-    .btn-green { background: #27ae60; }
-    .btn-red { background: #e74c3c; }
+    .green { color: #27ae60; } .red { color: #e74c3c; } .blue { color: #667eea; }
+    .form { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
+    .form input { padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+    .btn { padding: 10px 20px; border: none; border-radius: 6px; color: white; font-weight: bold; cursor: pointer; }
+    .btn-green { background: #27ae60; } .btn-red { background: #e74c3c; }
     table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 14px; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
     th { background: #fafafa; color: #888; }
-    .income { color: #27ae60; font-weight: bold; }
-    .expense { color: #e74c3c; font-weight: bold; }
+    .income { color: #27ae60; font-weight: bold; } .expense { color: #e74c3c; font-weight: bold; }
   </style>
 </head>
 <body>
-  <div class="header">
-    <strong>📚 Кабинет репетитора</strong>
-    <span>👋 <%= user.name %> <a href="/logout">Выйти</a></span>
-  </div>
+  <div class="header"><strong>📚 Кабинет репетитора</strong><span>👋 <%= user.name %> <a href="/logout">Выйти</a></span></div>
   <div class="menu">
     <a href="/teacher/dashboard">🏠 Главная</a>
     <a href="/teacher/calendar">📅 Расписание</a>
@@ -45,52 +37,30 @@
   </div>
   <div class="content">
     <h2>💰 Финансы</h2>
-
     <div class="cards">
-      <div class="card">
-        <div class="label">Доходы</div>
-        <div class="num green"><%= totalIncome %> BYN</div>
-      </div>
-      <div class="card">
-        <div class="label">Расходы</div>
-        <div class="num red"><%= totalExpense %> BYN</div>
-      </div>
-      <div class="card">
-        <div class="label">Баланс</div>
-        <div class="num blue"><%= totalIncome - totalExpense %> BYN</div>
-      </div>
+      <div class="card"><div class="label">Доходы</div><div class="num green"><%= totalIncome %> BYN</div></div>
+      <div class="card"><div class="label">Расходы</div><div class="num red"><%= totalExpense %> BYN</div></div>
+      <div class="card"><div class="label">Баланс</div><div class="num blue"><%= totalIncome - totalExpense %> BYN</div></div>
     </div>
-
-    <h3>➕ Добавить доход</h3>
-    <form action="/teacher/add-finance" method="POST" class="add-form">
+    <h3>➕ Доход</h3>
+    <form action="/teacher/add-finance" method="POST" class="form">
       <input type="hidden" name="type" value="income">
-      <input type="number" name="amount" placeholder="Сумма (BYN)" required>
-      <input type="text" name="description" placeholder="Описание (от кого, за что)">
+      <input type="number" name="amount" placeholder="Сумма" required>
+      <input type="text" name="description" placeholder="Описание">
       <input type="date" name="date" required>
-      <button type="submit" class="btn btn-green">Добавить доход</button>
+      <button class="btn btn-green">Добавить</button>
     </form>
-
-    <h3>➖ Добавить расход</h3>
-    <form action="/teacher/add-finance" method="POST" class="add-form">
+    <h3>➖ Расход</h3>
+    <form action="/teacher/add-finance" method="POST" class="form">
       <input type="hidden" name="type" value="expense">
-      <input type="number" name="amount" placeholder="Сумма (BYN)" required>
-      <input type="text" name="description" placeholder="Описание (на что)">
+      <input type="number" name="amount" placeholder="Сумма" required>
+      <input type="text" name="description" placeholder="Описание">
       <input type="date" name="date" required>
-      <button type="submit" class="btn btn-red">Добавить расход</button>
+      <button class="btn btn-red">Добавить</button>
     </form>
-
     <h3>📋 История</h3>
-    <table>
-      <tr><th>Дата</th><th>Тип</th><th>Описание</th><th>Сумма</th></tr>
-      <% finances.forEach(function(f) { %>
-        <tr>
-          <td><%= f.date %></td>
-          <td><%= f.type === 'income' ? '📥 Доход' : '📤 Расход' %></td>
-          <td><%= f.description || '—' %></td>
-          <td class="<%= f.type %>"><%= f.type === 'income' ? '+' : '-' %><%= f.amount %> BYN</td>
-        </tr>
-      <% }) %>
-    </table>
+    <table><tr><th>Дата</th><th>Тип</th><th>Описание</th><th>Сумма</th></tr>
+    <% finances.forEach(function(f){ %><tr><td><%= f.date %></td><td><%= f.type==='income'?'📥 Доход':'📤 Расход' %></td><td><%= f.description||'—' %></td><td class="<%= f.type %>"><%= f.type==='income'?'+':'-' %><%= f.amount %> BYN</td></tr><% }) %></table>
   </div>
 </body>
 </html>

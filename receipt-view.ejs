@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"><title>Счёт</title>
+  <style>
+    body { font-family: Arial; background: #f5f6fa; margin: 0; padding: 40px; }
+    .receipt { background: white; padding: 40px; border-radius: 12px; max-width: 700px; margin: 0 auto; }
+    h1 { color: #333; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { padding: 10px; border-bottom: 1px solid #eee; }
+    .total { font-size: 20px; font-weight: bold; text-align: right; margin-top: 20px; }
+    .print-btn { background: #667eea; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; }
+    @media print { .print-btn { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="receipt">
+    <h1>🧾 Счёт-квитанция</h1>
+    <p>Ученик: <strong><%= receipt.student_name %></strong></p>
+    <p>Email: <%= receipt.student_email %></p>
+    <p>Период: <strong><%= receipt.month %></strong></p>
+    <p>Дата: <%= receipt.created_at %></p>
+    <table><tr><th>Дата</th><th>Описание</th><th>Сумма</th></tr>
+    <% items.forEach(function(i){ %><tr><td><%= i.date %></td><td><%= i.description||'—' %></td><td><%= i.amount %> BYN</td></tr><% }) %></table>
+    <div class="total">Итого: <%= receipt.total %> BYN</div>
+    <button class="print-btn" onclick="window.print()">🖨 Распечатать</button>
+  </div>
+</body>
+</html>
