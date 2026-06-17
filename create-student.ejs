@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Создать ученика</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f6fa; margin: 0; }
+    .header { background: #667eea; color: white; padding: 15px 25px; display: flex; justify-content: space-between; }
+    .header a { color: white; text-decoration: none; font-size: 14px; }
+    .menu { background: white; padding: 10px 25px; display: flex; gap: 15px; }
+    .menu a { text-decoration: none; color: #555; font-size: 14px; }
+    .content { padding: 25px; max-width: 500px; margin: 0 auto; }
+    .card { background: white; padding: 25px; border-radius: 12px; }
+    input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+    .btn { width: 100%; padding: 12px; background: #27ae60; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; }
+    .result { background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 15px; }
+    .result p { margin: 5px 0; font-size: 14px; }
+    .error { background: #ffebee; color: #c62828; padding: 10px; border-radius: 8px; margin-bottom: 15px; }
+    .back { color: #667eea; text-decoration: none; font-size: 14px; display: block; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <strong>📚 Кабинет репетитора</strong>
+    <span>👋 <%= user.name %> <a href="/logout">Выйти</a></span>
+  </div>
+  <div class="menu">
+    <a href="/teacher/dashboard">🏠 Главная</a>
+    <a href="/teacher/calendar">📅 Расписание</a>
+    <a href="/teacher/students">👩‍🎓 Ученики</a>
+    <a href="/teacher/check-homeworks">📝 На проверку</a>
+    <a href="/teacher/finances">💰 Финансы</a>
+  </div>
+  <div class="content">
+    <a href="/teacher/students" class="back">← Назад к ученикам</a>
+    <h2>👩‍🎓 Создать ученика</h2>
+    <div class="card">
+      <% if (error) { %><div class="error"><%= error %></div><% } %>
+
+      <% if (!generatedLogin) { %>
+        <form action="/teacher/create-student" method="POST">
+          <label>Имя ученика</label>
+          <input type="text" name="name" placeholder="Иван Иванов" required>
+          <label>Email ученика</label>
+          <input type="email" name="email" placeholder="uchenik@mail.com" required>
+          <button type="submit" class="btn">Создать ученика</button>
+        </form>
+      <% } %>
+
+      <% if (generatedLogin) { %>
+        <div class="result">
+          <h3>✅ Ученик создан!</h3>
+          <p><strong>Логин:</strong> <%= generatedLogin %></p>
+          <p><strong>Пароль:</strong> <%= generatedPassword %></p>
+          <p style="color:#888; font-size:12px;">Скопируйте и передайте ученику</p>
+        </div>
+        <a href="/teacher/create-student" style="display:block; margin-top:15px; color:#667eea;">Создать ещё одного</a>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>
